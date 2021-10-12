@@ -23,7 +23,7 @@ export class UserService {
 
     await TokenService.saveRefreshToken(user.id, tokens.refreshToken);
 
-    return { user: userDto, tokens };
+    return { user: userDto, ...tokens };
   }
 
   static async login(username: string, password: string) {
@@ -38,7 +38,7 @@ export class UserService {
 
     await TokenService.saveRefreshToken(candidate.id, tokens.refreshToken);
 
-    return { user: userDto, tokens };
+    return { user: userDto, ...tokens };
   }
 
   static async logout(refreshToken: string) {

@@ -10,7 +10,7 @@ export class UserController {
 
       const userData = await UserService.registration(username, password);
 
-      res.cookie('token', userData.tokens.refreshToken, { maxAge: 60 * 24 * 60 * 60 * 1000, httpOnly: true });
+      res.cookie('token', userData.refreshToken, { maxAge: 60 * 24 * 60 * 60 * 1000, httpOnly: true });
       res.json(userData);
     } catch (e) {
       next(e);
@@ -23,7 +23,7 @@ export class UserController {
 
       const userData = await UserService.login(username, password);
 
-      res.cookie('token', userData.tokens.refreshToken, { maxAge: 60 * 24 * 60 * 60 * 1000, httpOnly: true });
+      res.cookie('token', userData.refreshToken, { maxAge: 60 * 24 * 60 * 60 * 1000, httpOnly: true });
       res.json(userData);
     } catch (e) {
       next(e);
