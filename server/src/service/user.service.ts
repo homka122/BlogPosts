@@ -42,6 +42,6 @@ export class UserService {
   }
 
   static async logout(refreshToken: string) {
-    await TokenService.deleteToken(refreshToken);
+    await TokenService.deleteRefreshToken(refreshToken);
   }
 }
