@@ -5,7 +5,7 @@ import { User } from '../entities/User';
 import { ApiError } from '../exceptions/ApiError';
 
 export class TokenService {
-  static generateToken(payload: UserDto) {
+  static generateTokens(payload: UserDto) {
     const accessToken = jwt.sign(payload, process.env.JWT_ACCESS_SECRET, { expiresIn: '15m' });
     const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, { expiresIn: '60d' });
 
@@ -15,7 +15,8 @@ export class TokenService {
   static validateAccessToken(accessToken: string): UserDto | undefined {
     try {
       const payload = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET);
-      return payload as UserDto;
+      const userDto = new UserDto(payload);
+      return userDto;
     } catch (e) {
       return undefined;
     }
@@ -24,7 +25,8 @@ export class TokenService {
   static validateRefreshToken(refreshToken: string): UserDto | undefined {
     try {
       const payload = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
-      return payload as UserDto;
+      const userDto = new UserDto(payload);
+      return userDto;
     } catch (e) {
       return undefined;
     }
@@ -59,8 +61,8 @@ export class TokenService {
     }
   }
 
-  static async findRefreshToken(refreshToken: string): Promise<boolean> {
+  static async findRefreshToken(refreshToken: string): Promise<Token | undefined> {
     const token = await Token.findOne({ refreshToken });
-    return Boolean(token);
+    return token;
   }
 }
