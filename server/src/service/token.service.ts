@@ -54,6 +54,8 @@ export class TokenService {
     const tokenToDelete = await Token.findOne({ refreshToken });
     if (tokenToDelete) {
       await tokenToDelete.remove();
+    } else {
+      throw ApiError.UnauthorizedError();
     }
   }
 
