@@ -6,5 +6,6 @@ export default function ErrorMiddleware(err: ApiError | Error, req: Request, res
     return res.status(err.status).json({ message: err.message, errors: err.errors });
   }
 
+  console.log(err);
   return res.status(500).json({ message: 'Непридвиденная ошибка' });
 }
