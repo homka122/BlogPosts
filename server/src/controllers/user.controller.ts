@@ -34,7 +34,7 @@ export class UserController {
     try {
       const refreshToken = req.cookies.token;
 
-      await TokenService.deleteToken(refreshToken);
+      await UserService.logout(refreshToken);
 
       res.clearCookie('token');
       res.json({ message: 'Пользователь отлогинился' });

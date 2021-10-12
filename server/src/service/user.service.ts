@@ -40,4 +40,8 @@ export class UserService {
 
     return { user: userDto, tokens };
   }
+
+  static async logout(refreshToken: string) {
+    await TokenService.deleteToken(refreshToken);
+  }
 }
