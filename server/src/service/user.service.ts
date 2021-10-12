@@ -33,6 +33,11 @@ export class UserService {
       throw ApiError.BadRequest('Пользователя с таким именем не существует');
     }
 
+    const isPasswordCorrect = bcrypt.compareSync(password, candidate.password);
+    if (!isPasswordCorrect) {
+      throw ApiError.BadRequest('Неверный пароль');
+    }
+
     const userDto = new UserDto(candidate);
     const tokens = TokenService.generateToken({ ...userDto });
 
