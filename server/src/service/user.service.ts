@@ -3,6 +3,7 @@ import { ApiError } from '../exceptions/ApiError';
 import bcrypt from 'bcrypt';
 import { UserDto } from '../dto/user.dto';
 import { TokenService } from './token.service';
+import { Token } from '../entities/Token';
 
 export class UserService {
   static async registration(username: string, password: string) {
@@ -19,7 +20,7 @@ export class UserService {
     await user.save();
 
     const userDto = new UserDto(user);
-    const tokens = TokenService.generateToken({ ...userDto });
+    const tokens = TokenService.generateTokens({ ...userDto });
 
     await TokenService.saveRefreshToken(user.id, tokens.refreshToken);
 
@@ -39,7 +40,7 @@ export class UserService {
     }
 
     const userDto = new UserDto(candidate);
-    const tokens = TokenService.generateToken({ ...userDto });
+    const tokens = TokenService.generateTokens({ ...userDto });
 
     await TokenService.saveRefreshToken(candidate.id, tokens.refreshToken);
 
@@ -48,5 +49,23 @@ export class UserService {
 
   static async logout(refreshToken: string) {
     await TokenService.deleteRefreshToken(refreshToken);
+  }
+
+  static async refresh(refreshToken: string) {
+    if (!refreshToken) {
+      throw ApiError.UnauthorizedError();
+    }
+
+    const userData = TokenService.validateRefreshToken(refreshToken);
+    const tokenFromDb = await TokenService.findRefreshToken(refreshToken);
+    if (!userData || !tokenFromDb) {
+      throw ApiError.UnauthorizedError();
+    }
+
+    const tokens = TokenService.generateTokens({ ...userData });
+    tokenFromDb.refreshToken = tokens.refreshToken;
+    tokenFromDb.save();
+
+    return { ...tokens, user: userData };
   }
 }

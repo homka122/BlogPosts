@@ -42,4 +42,17 @@ export class UserController {
       next(e);
     }
   }
+
+  static async refresh(req: Request, res: Response, next: NextFunction) {
+    try {
+      const refreshToken = req.cookies.token;
+
+      const userData = await UserService.refresh(refreshToken);
+
+      res.cookie('token', userData.refreshToken, { maxAge: 60 * 24 * 60 * 60 * 1000, httpOnly: true });
+      res.json(userData);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
