@@ -14,6 +14,7 @@ const start = async () => {
   app.use(cors());
   app.use(express.json());
   app.use(cookieParser());
+  app.use('/static', express.static('./static'));
   app.use('/api', router);
   app.use(ErrorMiddleware);
 
