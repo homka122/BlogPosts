@@ -31,17 +31,13 @@ export class PostService {
   static async updatePost(postId: number, newTitle: string, newText: string): Promise<PostDto> {
     const post = await Post.findOne({ id: postId }, { relations: ['creator'] });
 
-    if (newTitle.length === 0 || newText.length === 0) {
-      throw ApiError.BadRequest('Длина названия поста или его содержимое не может равняться нулю');
-    }
-
     if (!post) {
       throw ApiError.BadRequest('Поста с таким id нет');
     }
 
     post.title = newTitle;
     post.text = newText;
-    post.save();
+    await post.save();
 
     return new PostDto(post);
   }
