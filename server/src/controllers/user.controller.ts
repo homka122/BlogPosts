@@ -37,7 +37,7 @@ export class UserController {
       await UserService.logout(refreshToken);
 
       res.clearCookie('token');
-      res.json({ message: 'Пользователь отлогинился' });
+      res.json({ message: 'Пользователь разлогинился' });
     } catch (e) {
       next(e);
     }
