@@ -13,6 +13,7 @@ export class ValidationMiddleware {
       if (!errors.isEmpty()) {
         next(ApiError.BadRequest('Ошибка валидации', errors.array()));
       }
+      next();
     };
   }
 
