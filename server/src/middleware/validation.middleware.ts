@@ -52,4 +52,11 @@ export class ValidationMiddleware {
       this.throwErrors(),
     ];
   }
+
+  static getPosts() {
+    return [
+      check('page').optional({ checkFalsy: true }).isNumeric().withMessage('Номер страницы должен быть числом'),
+      this.throwErrors(),
+    ];
+  }
 }

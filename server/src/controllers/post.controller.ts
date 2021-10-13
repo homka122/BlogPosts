@@ -16,8 +16,15 @@ export class PostController {
   }
 
   static async getPosts(req: Request, res: Response, next: NextFunction) {
-    const posts = await PostService.getPosts();
+    const { page } = req.body;
+
+    const posts = await PostService.getPosts(page);
     res.status(200).json(posts);
+  }
+
+  static async getPagesCount(req: Request, res: Response, next: NextFunction) {
+    const pageCount = await PostService.getPagesCount();
+    res.json({ count: pageCount });
   }
 
   static async updatePost(req: Request, res: Response, next: NextFunction) {

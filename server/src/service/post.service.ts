@@ -4,6 +4,8 @@ import { Post } from '../entities/Post';
 import { User } from '../entities/User';
 import { ApiError } from '../exceptions/ApiError';
 
+const postsOnPage = 20;
+
 export class PostService {
   static updateImagesInText(text: string, images: any[]) {
     const updatedText = text
@@ -46,10 +48,17 @@ export class PostService {
     return postDto;
   }
 
-  static async getPosts(): Promise<PostDto[]> {
-    const posts = await Post.find({ relations: ['creator'] });
+  static async getPosts(page?: number): Promise<PostDto[]> {
+    const skip = page ? (page - 1) * postsOnPage : 0;
+    const posts = await Post.find({ relations: ['creator'], take: postsOnPage, skip, order: { createdAt: 'DESC' } });
+
     const postsDto = posts.map((post) => new PostDto(post));
     return postsDto;
+  }
+
+  static async getPagesCount(): Promise<number> {
+    const count = await Post.count();
+    return Math.ceil(count / postsOnPage);
   }
 
   static async updatePost(postId: number, newTitle: string, newText: string, images: any[]): Promise<PostDto> {
