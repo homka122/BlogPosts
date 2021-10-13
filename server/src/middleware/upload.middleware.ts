@@ -19,7 +19,7 @@ export function uploadMiddleware(req: Request, res: Response, next: NextFunction
     limits: {
       fileSize: 10000000,
     },
-  }).array('images', 5);
+  }).array('images', 25);
 
   upload(req, res, (err) => {
     if (err) {
