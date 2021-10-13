@@ -61,11 +61,15 @@ export class PostService {
     return Math.ceil(count / postsOnPage);
   }
 
-  static async updatePost(postId: number, newTitle: string, newText: string, images: any[]): Promise<PostDto> {
+  static async updatePost(postId: number, newTitle: string, newText: string, images: any[], userId: number): Promise<PostDto> {
     const post = await Post.findOne({ id: postId }, { relations: ['creator'] });
 
     if (!post) {
       throw ApiError.BadRequest('Поста с таким id нет');
+    }
+
+    if (post.creator.id !== userId) {
+      throw ApiError.BadRequest('Только автор поста может редактировать этот пост');
     }
 
     const updatedNewText = this.updateImagesInText(newText, images);
@@ -77,11 +81,15 @@ export class PostService {
     return new PostDto(post);
   }
 
-  static async deletePost(postId: number): Promise<PostDto> {
+  static async deletePost(postId: number, userId: number): Promise<PostDto> {
     const post = await Post.findOne({ id: postId }, { relations: ['creator'] });
 
     if (!post) {
       throw ApiError.BadRequest('Поста с таким id нет');
+    }
+
+    if (post.creator.id !== userId) {
+      throw ApiError.BadRequest('Только автор поста может удалить этот пост');
     }
 
     const postDto = new PostDto(post);

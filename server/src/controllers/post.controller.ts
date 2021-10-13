@@ -32,7 +32,7 @@ export class PostController {
       const { postId, title, text } = req.body;
       const images = req.files as [];
 
-      const post = await PostService.updatePost(postId, title, text, images);
+      const post = await PostService.updatePost(postId, title, text, images, req.user.id);
 
       res.json(post);
     } catch (e) {
@@ -44,7 +44,7 @@ export class PostController {
     try {
       const { postId } = req.body;
 
-      const post = await PostService.deletePost(postId);
+      const post = await PostService.deletePost(postId, req.user.id);
 
       res.json(post);
     } catch (e) {

@@ -6,12 +6,10 @@ import { ValidationMiddleware } from '../middleware/validation.middleware';
 
 const router = Router();
 
-router.use(authMiddleware);
-
-router.post('/create', uploadMiddleware, ValidationMiddleware.createPostAndUpdate(), PostController.createPost);
+router.post('/create', authMiddleware, uploadMiddleware, ValidationMiddleware.createPostAndUpdate(), PostController.createPost);
 router.post('/', ValidationMiddleware.getPosts(), PostController.getPosts);
 router.get('/pagescount', PostController.getPagesCount);
-router.put('/update', uploadMiddleware, ValidationMiddleware.createPostAndUpdate(), PostController.updatePost);
-router.delete('/delete', PostController.deletePost);
+router.put('/update', authMiddleware, uploadMiddleware, ValidationMiddleware.createPostAndUpdate(), PostController.updatePost);
+router.delete('/delete', authMiddleware, PostController.deletePost);
 
 export default router;
