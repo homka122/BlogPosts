@@ -11,7 +11,7 @@ router.use(authMiddleware);
 router.post('/create', uploadMiddleware, ValidationMiddleware.createPostAndUpdate(), PostController.createPost);
 router.post('/', ValidationMiddleware.getPosts(), PostController.getPosts);
 router.get('/pagescount', PostController.getPagesCount);
-router.post('/update', uploadMiddleware, ValidationMiddleware.createPostAndUpdate(), PostController.updatePost);
-router.post('/delete', PostController.deletePost);
+router.put('/update', uploadMiddleware, ValidationMiddleware.createPostAndUpdate(), PostController.updatePost);
+router.delete('/delete', PostController.deletePost);
 
 export default router;
