@@ -6,7 +6,8 @@
   "scripts": {
     "watch": "tsc -w",
     "start": "node dist/index",
-    "dev": "nodemon dist/index"
+    "dev": "nodemon dist/index",
+    "postinstall": "tsc"
   },
   "keywords": [],
   "author": "",
