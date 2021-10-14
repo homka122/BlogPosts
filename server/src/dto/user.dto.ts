@@ -1,5 +1,3 @@
-import { User } from '../entities/User';
-
 export class UserDto {
   username: string;
   id: number;

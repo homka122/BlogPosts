@@ -1,6 +1,4 @@
 import { NextFunction, Request, Response } from 'express';
-import { ApiError } from '../exceptions/ApiError';
-import { TokenService } from '../service/token.service';
 import { UserService } from '../service/user.service';
 
 export class UserController {
