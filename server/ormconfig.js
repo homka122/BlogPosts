@@ -1,13 +1,9 @@
 module.exports = {
   type: 'postgres',
-  url: process.env.POSTGRES_URL,
-  ssl: true,
+  host: 'localhost',
+  database: 'blogposts',
+  password: 'homka',
   synchronize: true,
-  extra: {
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  },
   entities: ['dist/entities/**/*.js'],
   migrations: ['src/migration/**/*.ts'],
   subscribers: ['src/subscriber/**/*.ts'],
